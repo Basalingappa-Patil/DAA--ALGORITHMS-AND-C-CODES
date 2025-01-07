@@ -1,0 +1,61 @@
+Floyd
+
+#include <iostream>
+#include <climits>
+using namespace std;
+
+void floydAlgorithm(int numNodes, int adjMatrix[10][10]);
+
+int main() {
+    const int numNodes = 6; // Number of nodes
+    int adjMatrix[10][10];  // Adjacency matrix (max size 10x10)
+
+    // Input the adjacency matrix
+    cout << "Enter the weight matrix (enter 999 for no direct path):" << endl;
+    for (int i = 0; i < numNodes; i++) {
+        for (int j = 0; j < numNodes; j++) {
+            cin >> adjMatrix[i][j];
+        }
+    }
+
+    // Apply Floyd's Algorithm
+    floydAlgorithm(numNodes, adjMatrix);
+
+    return 0;
+}
+
+void floydAlgorithm(int numNodes, int adjMatrix[10][10]) {
+    int dist[10][10];
+
+    // Initialize the distance matrix
+    for (int i = 0; i < numNodes; i++) {
+        for (int j = 0; j < numNodes; j++) {
+            dist[i][j] = adjMatrix[i][j];
+        }
+    }
+
+    // Floyd's Algorithm
+    for (int k = 0; k < numNodes; k++) {
+        for (int i = 0; i < numNodes; i++) {
+            for (int j = 0; j < numNodes; j++) {
+                // Update the shortest distance
+                if (dist[i][k] != 999 && dist[k][j] != 999 && dist[i][k] + dist[k][j] < dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+
+    // Output the distance matrix
+    cout << "\nShortest Distance Matrix:" << endl;
+    for (int i = 0; i < numNodes; i++) {
+        for (int j = 0; j < numNodes; j++) {
+            if (dist[i][j] == 999) {
+                cout << "INF\t";
+            } else {
+                cout << dist[i][j] << "\t";
+            }
+        }
+        cout << endl;
+    }
+}
